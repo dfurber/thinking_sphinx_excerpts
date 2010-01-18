@@ -1,0 +1,36 @@
+Thinking Sphinx Excerpt Highlighting
+=================================
+
+This plugin extends Thinking Sphinx to do excerpt highlighting. That means you can present search results and have the words around the search terms excerpted with the search term highlighted.
+
+
+
+
+Example
+=======
+
+Post.search "garden", :excerpts => true
+
+By default the search terms are highlighted with <strong> tags. If you want a different tag, specify it as follows in a config/initializer:
+
+ThinkingSphinx::Search.wraptag = "em"
+
+You don't really have a choice about having the search terms highlighted. If you want a tag that is unstyled by default, use this:
+
+ThinkingSphinx::Search.wraptag = ""
+
+Then the wrapping tag will be "<span class='match'>", which you can safely ignore.
+
+
+Pagination
+==========
+
+Thinking Sphinx has gone more aggressively in the direction of forcing you to use Will Paginate. However, if you have paginating_find available, then this plugin will transform the results into a PagingEnumerator regardless of whether you perform excerpting. If you have paginating_find but for some reason would rather use will_paginate:
+
+ThinkingSphinx::Search.configure_excerpts :paginating_find => false
+
+In either scenario, the following would yield the second page of Davids:
+User.search "David", :excerpts => true, :page => 2
+
+
+Copyright (c) 2010 David Furber, released under the MIT license
