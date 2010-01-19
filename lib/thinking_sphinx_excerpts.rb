@@ -1,5 +1,11 @@
 # ThinkingSphinxExcerpts
 module ThinkingSphinx
+  def self.configure_excerpts(options={})
+    ThinkingSphinx::Configuration.instance.configure_excerpts(options)
+  end
+  def self.excerpt_options
+    ThinkingSphinx::Configuration.instance.excerpt_options
+  end
   class Configuration
     attr_accessor :excerpt_options
     def configure_excerpts(options={})
@@ -19,10 +25,8 @@ module ThinkingSphinx
       if model.nil? && one_class
         model ||= one_class
       end
-      
       populate
-      
-      xoptions = ThinkingSphinx::Configuration.instance.excerpt_options
+      xoptions = ThinkingSphinx.excerpt_options
       options = {
         :docs   => [strip_bogus_characters(string)],
         :words  => strip_query_commands(results[:words].keys.join(' ')),
@@ -89,11 +93,11 @@ module ThinkingSphinx
       private
       
       def using_paginating_find?
-        ThinkingSphinx::Configuration.instance.excerpt_options[:paginating_find]
+        ThinkingSphinx.excerpt_options[:paginating_find]
       end
       
       def attributes_not_to_excerpt
-        ThinkingSphinx::Configuration.instance.excerpt_options[:never_excerpt] || []
+        ThinkingSphinx.excerpt_options[:never_excerpt] || []
       end
       
       def client
